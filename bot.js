@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const mmss = require('ms');
 const moment = require('moment');
-const Util = require('discord.js');
 const canvas = require("canvas");
 const Canvas = require("canvas");
 const jimp = require('jimp');
@@ -2300,4 +2299,5 @@ client.on('message', message => {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-client.login(BOT_TOKEN);
+
+client.login(process.env.BOT_TOKEN);
