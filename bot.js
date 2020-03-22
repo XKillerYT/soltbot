@@ -3,7 +3,6 @@ const fs = require('fs');
 const mmss = require('ms');
 const moment = require('moment');
 const canvas = require("canvas");
-const Canvas = require("canvas");
 const jimp = require('jimp');
 const getYoutubeID = require('get-youtube-id');
 const fetchVideoInfo = require('youtube-info');
