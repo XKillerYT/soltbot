@@ -33,16 +33,6 @@ setInterval(() => {
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-const spread = JSON.parse(fs.readFileSync('./spread.json' , 'utf8'));///////////! , X_KillérYT - 💔#2571
-const sug = JSON.parse(fs.readFileSync('./sug.json' , 'utf8'));///////////! , X_KillérYT - 💔#2571
-const log = JSON.parse(fs.readFileSync('./log.json' , 'utf8'));///////////! , X_KillérYT - 💔#2571
-const antihack = JSON.parse(fs.readFileSync('./antihack.json' , 'utf8'));///////////! , X_KillérYT - 💔#2571
-const suck = JSON.parse(fs.readFileSync('./suck.json', 'utf8'));///////////! , X_KillérYT - 💔#2571
-const credits = JSON.parse(fs.readFileSync("./credits.json"));///////////! , X_KillérYT - 💔#2571
-const level = JSON.parse(fs.readFileSync("./level.json", "utf8"));///////////! , X_KillérYT - 💔#2571
-const warnchannel = JSON.parse(fs.readFileSync('./warnchannel.json' , 'utf8'));///////////! , X_KillérYT - 💔#2571
-const points = JSON.parse(fs.readFileSync('./points.json' , 'utf8'));///////////! , X_KillérYT - 💔#2571
-
 ////////////////////////////////////////////////////////////////////////////////////
 
 client.on('message', async message => {///////////! , X_KillérYT - 💔#2571
@@ -384,56 +374,6 @@ if(Reason) {
 
   });
     
-client.on('message', message => {
-           if (!message.channel.guild) return;
- 
-    let room = message.content.split(" ").slice(1);
-    let findroom = message.guild.channels.find('name', `${room}`)
-    if(message.content.startsWith(prefix + "setSug")) {
-        if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
-        if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
-if(!room) return message.channel.send('Please Type The Channel Name')
-if(!findroom) return message.channel.send('Cant Find This Channel')
-let embed = new Discord.RichEmbed()
-.setTitle('**Done The Suggest Code Has Been Setup**')
-.addField('Channel:', `${room}`)
-.addField('Requested By:', `${message.author}`)
-.setThumbnail(message.author.avatarURL)
-.setFooter(`${client.user.username}`)
-message.channel.sendEmbed(embed)
-sug[message.guild.id] = {
-channel: room,
-}
-fs.writeFile("./sug.json", JSON.stringify(sug), (err) => {
-if (err) console.error(err)
-})
-   client.on('message', message => {
- 
- 
-    if(message.content.startsWith(prefix + "sug")) {
-      if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
-      let suggest = message.content.split(" ").slice(1);
-      if(!suggest) return message.reply(`**Please Type The Suggest**`)
-    let findchannel = (message.guild.channels.find('name', `${sug[message.guild.id].channel}`))
-    if(!findchannel) return message.channel.send(`Error 404: The Suggest Channel Cant Find Or Not Set To Set The Suggest Channel Type: ${prefix}setSug`)
-    message.channel.send(`Done Your Suggest Will Be Seen By The Staffs`)
-    let sugembed = new Discord.RichEmbed()
-    .setTitle('New Suggest !')
-    .addField('Suggest By:', `${message.author}`)
-    .addField('Suggest:', `${suggest}`)
-    .setFooter(client.user.username)
-    findchannel.sendEmbed(sugembed)
-        .then(function (message) {
-          message.react('✅')
-          message.react('❌')
-        })
-        .catch(err => {
-            message.reply(`Error 404: The Suggest Channel Cant Find Or Not Set To Set The Suggest Channel Type: ${prefix}setSug`)
-            console.error(err);
-        });
-        }
-      })
-    }})
 
     client.on('message', message => {
     
@@ -577,57 +517,8 @@ Dat = currentTime.getDate()
   });
   }
  
-});
 
-client.on("message",(message) => {
-    if (message.channel.type !== "text") return;
-    if (!message.content.startsWith(prefix)) return;
-        if(message.content.startsWith(prefix + "temp on")) {
-            if (!message.member.hasPermission("MANAGE_CHANNELS")) return message.reply("** You Don't Have Permission `Manage channels` To Do This Command");
-            temp[message.guild.id] = {
-                work : true,
-                channel : "Not Yet"
-            };
-            message.guild.createChannel("اضغط لصنع روم مؤقت", 'voice').then(c => {
-                c.setPosition(1);
-                temp[message.guild.id].channel = c.id
-                message.channel.send("** Done.**");
-            });
-        if(message.content.startsWith(prefix + "temp off")) {
-            if (!message.member.hasPermission("MANAGE_CHANNELS")) return message.reply("** You Don't Have Permission `Manage channels` To Do This Command");
-        message.guild.channels.get(temp[message.guild.id]).delete();
-            temp[message.guild.id] = {
-                work : false,
-                channel : "Not Yet"
-            };
-        message.channel.send("** Done.**");
-    };
 }})
-client.on("voiceStateUpdate", (o,n) => {
-    if (!temp[n.guild.id]) return;
-    if (temp[n.guild.id].work == false) return;
-    if (n.voiceChannelID == temp[n.guild.id].channel) {
-        n.guild.createChannel(n.user.username, 'voice').then(c => {
-            n.setVoiceChannel(c);
-            c.overwritePermissions(n.user.id, {
-                CONNECT:true,
-                SPEAK:true,
-                MANAGE_CHANNEL:true,
-                MUTE_MEMBERS:true,
-                DEAFEN_MEMBERS:true,
-                MOVE_MEMBERS:true,
-                VIEW_CHANNEL:true  
-            });
-        })
-    };
-    if (!o.voiceChannel) return;
-    if (o.voiceChannel.name == o.user.username) {
-        o.voiceChannel.delete();
-    };
-    fs.writeFile('./temp.json', JSON.stringify(temp), (err) => {
-        if (err) console.error(err);
-        })
-        });
 
 client.on('message', message => {
      if(!message.channel.guild) return;
@@ -775,145 +666,6 @@ client.on('guildMemberAdd', member => {
 
   channel.send(`Welcome to the server, ${member}`);
 });
-
-client.on('message', message => {
-    if(message.content.startsWith(prefix + "antispread off")) {
-        if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
-        if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
-spread[message.guild.id] = {
-onoff: 'Off',
-}
-message.channel.send(`**⛔ The AntiSpread Is __𝐎𝐅𝐅__ !**`)
-          fs.writeFile("./spread.json", JSON.stringify(spread), (err) => {
-            if (err) console.error(err)
-            .catch(err => {
-              console.error(err);
-          });
-            });
-          }
-
-        })
-        client.on('message', message => {
-    if(message.content.startsWith(prefix + "antispread on")) {
-        if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
-        if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
-spread[message.guild.id] = {
-onoff: 'On',
-}
-message.channel.send(`**✅ The AntiSpread Is __𝐎𝐍__ !**`)
-          fs.writeFile("./spread.json", JSON.stringify(spread), (err) => {
-            if (err) console.error(err)
-            .catch(err => {
-              console.error(err);
-          });
-            });
-          }
-
-        })
-    client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('http://www.gmail.com/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-});
-
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('https://www.snapchat.com/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-});
-
-
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('https://www.instagram.com/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-});
-
-
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('https://www.twitter.com/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-});
-
-
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('http://www.facebook.com/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-});
-
-
-
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('https://www.youtube.com/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-
-});
-
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('https://www.discordapp.com/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-
-});
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('https://discord.gg/')){
-            if(!spread[message.guild.id]) spread[message.guild.id] = {
-        onoff: 'Off'
-            }
-        if(spread[message.guild.id].onoff === 'Off') return;
-        message.delete()
-    return message.reply(`**⛔ The Antispread ON ! So You Cant spread Here !**`)
-    }
-
-});
-
 
 client.on('message', message => {
         if (message.content.toLowerCase() === prefix + "invite") {
@@ -1285,52 +1037,6 @@ client.on('message' , message => {
    })
     }  
    });
-
-
-client.on('message', message => {
-    const logroom = message.content.split(" ").slice(1);
-    const findlogroom = message.guild.channels.find('name', `${logroom}`)
-    if(message.content.startsWith(prefix + "setLog")) {
-        if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
-        if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
-if(!logroom) return message.channel.send('Please Type The Channel Name')
-if(!findlogroom) return message.channel.send('Please Type The Log Channel Name')
-let embed = new Discord.RichEmbed()
-.setTitle('**Done The Log Code Has Been Setup**')
-.addField('Channel:', `${logroom}`)
-.addField('Requested By:', `${message.author}`)
-.setThumbnail(message.author.avatarURL)
-.setFooter(`${client.user.username}`)
-message.channel.sendEmbed(embed)
-log[message.guild.id] = {
-channel: logroom,
-onoff: 'On'
-}
-fs.writeFile("./log.json", JSON.stringify(log), (err) => {
-if (err) console.error(err)
-})
-    }})
-         
-client.on('message', message => {
- 
-    if(message.content.startsWith(prefix + "toggleLog")) {
-        if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
-        if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
-        if(!log[message.guild.id]) log[message.guild.id] = {
-          onoff: 'Off'
-        }
-          if(log[message.guild.id].onoff === 'Off') return [message.channel.send(`**The log Is __𝐎𝐍__ !**`), log[message.guild.id].onoff = 'On']
-          if(log[message.guild.id].onoff === 'On') return [message.channel.send(`**The log Is __𝐎𝐅𝐅__ !**`), log[message.guild.id].onoff = 'Off']
-          fs.writeFile("./log.json", JSON.stringify(log), (err) => {
-            if (err) console.error(err)
-            .catch(err => {
-              console.error(err);
-          });
-            });
-          }
-         
-        })
- 
  
 client.on('messageDelete', message => {
  
@@ -2407,177 +2113,6 @@ function play(guild, song) {
     }).then(message =>{message.delete(5000)})
 }
 
-
-
-var time = require("./time.json");
-client.on("message", async message => {
-  if (message.author.bot || message.channel.type === "dm") return;
-  let args = message.content.split(" ");
-  let author = message.author.id;
-  if (!credits[author])
-    credits[author] = {
-      credits: 0
-    };
-  fs.writeFileSync("./credits.json", JSON.stringify(credits, 0, 4));
-  if (args[0].toLowerCase() == `${prefix}credits`) {
-    const mention = message.mentions.users.first() || message.author;
-    const mentionn = message.mentions.users.first();
-    if (!args[2]) {
-      message.channel.send(
-        `**${mention.username}, your :credit_card: balance is \`$${credits[mention.id].credits}\`**`
-      );
-    } else if (mentionn && args[2]) {
-      if (args[2] < 1) return message.channel.send(`**:x: | Error**`);
-      if (mention.bot) return message.channel.send(`**:x: | Error**`);
-      if (mentionn.id === message.author.id)
-        return message.channel.send(`**:x: | Error**`);
-      if (args[2] > credits[author].credits)
-        return message.channel.send(
-          `**:x: | Error , You Don't Have Enough Credit**`
-        );
-      if (args[2].includes("-")) return message.channel.send(`**:x: | Error**`);
-      let resulting = Math.floor(args[2] - args[2] * (5 / 100));
-      let tax = Math.floor(args[2] * (5 / 100));
-      let first = Math.floor(Math.random() * 9);
-      let second = Math.floor(Math.random() * 9);
-      let third = Math.floor(Math.random() * 9);
-      let fourth = Math.floor(Math.random() * 9);
-      let num = `${first}${second}${third}${fourth}`;
-      let canvas = Canvas.createCanvas(108, 40);
-      let ctx = canvas.getContext("2d");
-      const background = await Canvas.loadImage(
-        "https://cdn.discordapp.com/attachments/608278049091223552/617791172810899456/hmmm.png"
-      );
-      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-      ctx.font = "20px Arial Bold";
-      ctx.fontSize = "20px";
-      ctx.fillStyle = "#ffffff";
-      message.channel
-        .send(
-          `**${
-            message.author.username
-          }, Transfer Fees: \`${tax}\`, Amount: \`$${resulting.toLocaleString()}\`**
-type these numbers to confirm: `
-        )
-        .then(essss => {
-          ctx.fillText(num, canvas.width / 2.4, canvas.height / 1.7);
-          message.channel.sendFile(canvas.toBuffer()).then(m => {
-            message.channel
-              .awaitMessages(r => r.author.id === message.author.id, {
-                max: 1,
-                time: 20000,
-                errors: ["time"]
-              })
-              .then(collected => {
-                if (collected.first().content === num) {
-                  message.channel.send(
-                    `**:moneybag: | ${
-                      message.author.username
-                    }, Done Trans \`$${resulting.toLocaleString()}\` To ${mentionn}**`
-                  );
-                  mention.send(
-                    `**:money_with_wings: | Transfer Receipt \`\`\`You Have Received \`$${resulting.toLocaleString()}\` From User ${
-                      message.author.username
-                    }; (ID (${message.author.id})\`\`\``
-                  );
-                  m.delete();
-                  credits[author].credits += Math.floor(
-                    -resulting.toLocaleString()
-                  );
-                  credits[mentionn.id].credits += Math.floor(
-                    +resulting.toLocaleString()
-                  );
-                  fs.writeFileSync(
-                    "./credits.json",
-                    JSON.stringify(credits, 0, 4)
-                  );
-                } else {
-                  m.delete();
-                  essss.delete();
-                }
-              });
-          });
-        });
-    } else {
-      message.channel.send(
-        `**:x: | Error , Please Command True Ex: \`${prefix}credits [MentionUser] [Balance]\`**`
-      );
-    }
-  }
-  if (args[0].toLowerCase() === `${prefix}daily`) {
-    let cooldown = 8.64e7;
-    let Daily = time[message.author.id];
-    if (Daily !== 0 && cooldown - (Date.now() - Daily) > 0) {
-      let times = cooldown - (Date.now() - Daily);
-      message.channel.send(
-        `**:stopwatch: |  ${
-          message.author.username
-        }, your daily :dollar: credits refreshes in ${pretty(times, {
-          verbose: true
-        })}.**`
-      );
-      fs.writeFile("./time.json", JSON.stringify(time), function(e) {
-        if (e) throw e;
-      });
-    } else {
-      let ammount = (300, 500, 100, 200, 120, 150, 350, 320, 220, 250);
-      credits[author].credits += ammount;
-      time[message.author.id] = Date.now();
-      message.channel.send(
-        `**:atm:  | ${message.author.username}, you received your :yen: ${ammount} daily credits!**`
-      );
-      fs.writeFile("./credits.json", JSON.stringify(credits), function(e) {
-        if (e) throw e;
-      });
-    }
-  }
-}); // Me ZIAD كم حاقد
-
-
-client.on("message", message => {
-  if (message.author.bot) return undefined;
-  if (!level[message.author.id])
-    level[message.author.id] = {
-      xp: 0,
-      level: 0
-    };
-  let username = message.author;
-  level[message.author.id].xp++;
-  let userlevel = level[message.author.id];
-  if (userlevel.xp > Math.floor(Math.random() * 250) + 50) {
-    userlevel.level++;
-    userlevel.xp = 0;
-  }
-  fs.writeFileSync("./level.json", JSON.stringify(level), function(s) {
-    if (s) throw s;
-  });
-});
-
-client.on("message", async message => {
-  let Fire = message.content.split(" ")[0].substring(prefix.length);
-  let mention = message.mentions.users.first() || message.author;
-  if (Fire === "addcredits") {
-    let args = message.content.split(" ");
-    if (!devs.includes(message.author.id)) return;
-    if (!args[1] || isNaN(args[1])) return message.reply("**Type Credit**");
-    if (!credits[mention.id]) return;
-    credits[mention.id].credits += +args[1];
-    fs.writeFileSync("./credits.json", JSON.stringify(credits));
-    console.log(credits[mention.id]);
-    message.reply(`**, Adedd Money For : \`${args[1]}\`Done`);
-  } else if (Fire === "removecredits") {
-    let args = message.content.split(" ");
-    if (!devs.includes(message.author.id)) return;
-    if (!args[1] || isNaN(args[1])) return message.reply("**Type Credit**");
-    if (!credits[mention.id]) return;
-    credits[mention.id].credits += -args[1];
-    fs.writeFileSync("./credits.json", JSON.stringify(credits));
-    console.log(credits[mention.id]);
-    message.reply(`**, Remove Money For : \`${args[1]}\`**`);
-  }
-});
-
-
 client.on("message", message => {
   if (message.author.bot) return;
 
@@ -2640,137 +2175,6 @@ client.on("message", message => {
   }
 });
 
-client.on('message', async message => {
-
-
-	if(message.channel.type !== 'text') return;
-	
-	
-	var command = message.content.toLowerCase().split(" ")[0];
-	var args = message.content.toLowerCase().split(" ");
-	var userM = message.guild.member(message.mentions.users.first() || message.guild.members.find(m => m.id == args[1]));
-	  const embed  = new Discord.RichEmbed()
-.setDescription(`
-**لم يتم تسجيل أي نقطة حتى الأن **
-** أمثلة للأوامر: **
-**:small_orange_diamond:** ${prefix}points ${message.author} 1 \`لتغيير نقاط شخص معين \`
-**:small_orange_diamond:** ${prefix}points ${message.author} +1 \`لزيادة نقاط شخص معين\`
-**:small_orange_diamond:** ${prefix}points ${message.author} -1 \`لأزالة نقطة من شخص معين \`
-**:small_orange_diamond:** ${prefix}points ${message.author} 0 \`لتصفير نقاط شخص معين \`
-**:small_orange_diamond:** ${prefix}points reset \`لتصفير جميع النقاط\``)
-.setFooter('Requested by '+message.author.username, message.author.avatarURL)
-.setColor(`#e60909`)
-  const error  = new Discord.RichEmbed()
-.setDescription(`
-**:x: | يجب كتابة الأمر بشكل صحيح. **
-** أمثلة للأوامر: **
-**:small_orange_diamond:** ${prefix}points ${message.author} 1 \`لتغيير نقاط شخص معين \`
-**:small_orange_diamond:** ${prefix}points ${message.author} +1 \`لزيادة نقاط شخص معين\`
-**:small_orange_diamond:** ${prefix}points ${message.author} -1 \`لأزالة نقطة من شخص معين \`
-**:small_orange_diamond:** ${prefix}points ${message.author} 0 \`لتصفير نقاط شخص معين \`
-**:small_orange_diamond:** ${prefix}points reset \`لتصفير جميع النقاط\``)
-.setFooter('Requested by '+message.author.username, message.author.avatarURL)
-.setColor(`#e60909`)
-if(command == prefix + 'points') {
-	 
-		if(!message.guild.member(client.user).hasPermission('EMBED_LINKS')) return message.channel.send(':no_entry: | I dont have Embed Links permission.');
-		if(!args[1]) {
-			if(!points) return message.channel.send(embed);
-			var members = Object.values(points);
-			var memb = members.filter(m => m.points >= 1);
-			if(memb.length == 0) return message.channel.send(embed);
-			var x = 1;
-			let pointsTop = new Discord.RichEmbed()
-			.setAuthor('Points:')
-			.setColor('#FBFBFB')
-			.setDescription(memb.sort((second, first) => first.points > second.points).slice(0, 10).map(m => `**:small_blue_diamond:** <@${m.id}> \`${m.points}\``).join('\n'))
-			.setFooter(`Requested by ${message.author.username}`, message.author.avatarURL);
-			message.channel.send({
-				embed: pointsTop
-			});
-		}else if(args[1] == 'reset') {
-			let pointsReset = new Discord.RichEmbed()
-			.setDescription('**:white_check_mark: | تم تصفير جميع النقاظ بنجاح**')
-			.setFooter('Requested by '+message.author.username, message.author.avatarURL)
-			if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send("You dont have Manage Server permission.");
-			if(!points) return message.channel.send(pointsReset);
-			var members = Object.values(points);
-			var memb = members.filter(m => m.points >= 1);
-			if(memb.length == 0) return message.channel.send(pointsReset);
-			points = {};
-			message.channel.send(pointsReset);
-		}else if(userM) {
-			if(!message.member.hasPermission('MANAGE_GUILD')) return  message.channel.send("You dont have Manage Server permission.");
-			if(!points[userM.user.id]) points[userM.user.id] = {
-				points: 0,
-				id: userM.user.id
-			};
-			if(!args[2]) {
-				if(points[userM.user.id].points == 0) return message.channel.send( `${userM.user.username} Not have any points.`);
-				var userPoints = new Discord.RichEmbed()
-				.setColor('#d3c325')
-				.setAuthor(`${userM.user.username} have ${points[userM.user.id].points} points.`);
-				message.channel.send({
-					embed: userPoints
-				});
-			}else if(args[2] == 'reset') {
-				if(points[userM.user.id].points == 0) return message.channel.send(error);
-				points[userM.user.id].points = 0;
-				message.channel.send(`Successfully reset ${userM.user.username} points.`);
-			}else if(args[2].startsWith('+')) {
-				args[2] = args[2].slice(1);
-				args[2] = parseInt(Math.floor(args[2]));
-				if(points[userM.user.id].points == 1000000) return message.channel.send(error);
-				if(!args[2]) return message.channel.send(error);
-				if(isNaN(args[2])) return message.channel.send(error);
-				if(args[2] > 1000000) return message.channel.send(error);
-				if(args[2] < 1) return message.channel.send(error);
-				if((points[userM.user.id].points + args[2]) > 1000000) args[2] = 1000000 - points[userM.user.id].points;
-				points[userM.user.id].points += args[2];
-				let add = new Discord.RichEmbed()
-				.setDescription(`**:small_blue_diamond:** <@${userM.id}> \`${points[userM.user.id].points}\``)
-				.setAuthor('Points:')
-				.setColor('#FBFBFB')
-				.setFooter('Requested by' + message.author.username, message.author.avatarURL)
-				message.channel.send(add);
-			}else if(args[2].startsWith('-')) {
-				args[2] = args[2].slice(1);
-				args[2] = parseInt(Math.floor(args[2]));
-				if(points[userM.user.id].points == 0) return message.channel.send(error);
-				if(!args[2]) return message.channel.send(error);
-				if(isNaN(args[2])) return message.channel.send(error);
-				if(args[2] > 1000000) return message.channel.send(error);
-				if(args[2] < 1) return message.channel.send(error);
-				if((points[userM.user.id].points - args[2]) < 0) args[2] = points[userM.user.id].points;
-				points[userM.user.id].points -= args[2];
-					let rem = new Discord.RichEmbed()
-				.setDescription(`**:small_blue_diamond:** <@${userM.id}> \`${points[userM.user.id].points}\``)
-				.setAuthor('Points:')
-				.setColor('#FBFBFB')
-				.setFooter('Requested by' + message.author.username, message.author.avatarURL)
-				message.channel.send(rem);
-			}else if(!args[2].startsWith('+') || !args[2].startsWith('-')) {
-				args[2] = parseInt(Math.floor(args[2]));
-				if(isNaN(args[2])) return message.channel.send(error);
-				if(args[2] > 1000000) return message.channel.send(error);
-				if(args[2] < 1) return message.channel.send(error);
-				if(points[userM.user.id].points == args[2]) return message.channel.send(`${userM.user.username} points is already ${args[2]}.`);
-				points[userM.user.id].points = args[2];
-					let set = new Discord.RichEmbed()
-				.setDescription(`**:small_blue_diamond:** <@${userM.id}> \`${points[userM.user.id].points}\``)
-				.setAuthor('Points:')
-				.setColor('#FBFBFB')
-				.setFooter('Requested by' + message.author.username, message.author.avatarURL)
-				message.channel.send(set);
-			}
-			}
-			}
-      fs.writeFile("./points.json", JSON.stringify(points) ,(err) =>{
-          if (err) console.log(err.message);
-      });
-  
-}); 
-
     client.on('message', message => {
           if (message.content.toLowerCase() === prefix + "help") {
               if(!message.channel.guild) return message.channel.send("** هذا الامر للسيرفرات فقط ⛔  **");
@@ -2781,7 +2185,6 @@ if(command == prefix + 'points') {
               .addField("ــــــــــــــــــــــــ", '** `-help-admin` || لرؤية اوامر الادمنية | **')
               .addField("ــــــــــــــــــــــــ", '** `-help-games` || لرؤية اوامر الالعاب | **')
               .addField("ــــــــــــــــــــــــ", '** `-help-music` || لرؤية اوامر الميوزك | **')
-              .addField("ــــــــــــــــــــــــ", '** `-help-premium` || لرؤية اوامر البريميوم | **')
               message.channel.sendEmbed(embed);
           }
       });
@@ -2836,8 +2239,6 @@ if(command == prefix + 'points') {
     『-ban / لاعطاء شخص باند من الدسكورد 』
     『-ct / لانشاء روم كتابي 』
     『-cv / لانشاء روم صوتي 』
-    『-temp on / لتشغيل الرومات المؤقتة 』
-    『-temp off / لاطفاء الرومات المؤقتة 』
     『-c-count / لانشاء روم يكون بعدد اعضاء السيرفر 』
 
     
@@ -2890,35 +2291,6 @@ client.on('message', message => {
   『-queue / اظهار قائمة التشغيل 』
   『-np / اظهار الاغنية المشغلة حاليا 』
    
-
-  
-  **`);
-  
-  }
-  });
-
-client.on('message', message => {
-  if (message.author.bot) return;
-   if (message.content === prefix + "help-premium") {
-   message.channel.send('**تم ارسال رسالة في الخاص**');
-  
-  
-  
-  
-  message.author.sendMessage(`
-  **
-  [❖═════ SoltBot Commands ═══════❖]
-  
-  『-setSug / لتحديد روم اقتراحات 』
-  『-SetLog / لتحديد روم لوق 』
-  『-autorole / لتحديد رتبة تلقائية عند دخول اي شخص للسيرفر 』
-  『-makerole / لصناعة رتبة بالاسم الذي تريده 』
-  『-unban / لفك الباند عن شخص ما 』
-  『-gstart / لانشاء قيف اواي 』
-  『-toggleAntihack on / لتشغيل مانع الجحفلة 』
-  『-toggleAntihack off / لايقاف تشغيل مانع الجحفلة 』
-  『-points / لرؤية اوامر النقاط 』
-  
 
   
   **`);
