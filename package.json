@@ -2,9 +2,9 @@
   "name": "soltbot",
   "description": "soltbot",
   "version": "2.0.0",
-  "main": "soltbot.js",
+  "main": "bot.js",
   "scripts": {
-    "start": "node soltbot.js"
+    "start": "node bot.js"
   },
   "repository": {
     "type": "git",
